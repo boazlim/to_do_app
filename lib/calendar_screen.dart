@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'home_screen.dart';
+
+// on double tap on a specific box
+// an option provided showing the starting and ending time for that day appears
+// with the title name
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -8,7 +13,7 @@ class CalendarScreen extends StatefulWidget {
   _CalendarScreenState createState() => _CalendarScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class _CalendarScreenState extends State<CalendarScreen> { //this is the functionality for the floating action button
   List<Appointment> appointments;
 
   _CalendarScreenState() : appointments = getAppointments();
@@ -33,8 +38,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        // Use a StatefulWidget if you need more than one input field
-        // to manage the state of the inputs.
         return AddAppointmentDialog(onAdd: (Appointment newAppointment) {
           setState(() {
             appointments.add(newAppointment);
@@ -43,7 +46,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       },
     );
   }
-}
+}  // floating action button here
 
 class AddAppointmentDialog extends StatefulWidget {
   final Function(Appointment) onAdd;
@@ -84,8 +87,6 @@ class _AddAppointmentDialogState extends State<AddAppointmentDialog> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Here you would add validation and logic to ensure the times are correct
-                // For simplicity, we're assuming the user inputs valid data
                 final DateTime now = DateTime.now();
                 final DateTime startTime = DateTime(
                   now.year,
@@ -134,6 +135,9 @@ List<Appointment> getAppointments() {
     subject: 'Conference',
     color: Colors.blue));
 
+  for (Note note in list) {
+    meetings.add(note.getAppointment());
+  }
   return meetings;
 }
 

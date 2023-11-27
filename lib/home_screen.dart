@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-List<Note> list = [Note('Homework','Finish App Development Homework','3/5/2023')];
+List<Note> list = [Note('Homework','Finish App Development Homework','3/5/2023', '13', '14')];
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({super.key});
@@ -71,6 +72,8 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
+  final TextEditingController startTimeController = TextEditingController(text: '9');
+  final TextEditingController endTimeController = TextEditingController(text: '10');
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +94,23 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
             controller: dateController,
             decoration: const InputDecoration(labelText: 'Date Created'),
           ),
+          TextField(
+            controller: startTimeController,
+            decoration: const InputDecoration(labelText: 'Start Time'),
+          ),
+          TextField(
+            controller: endTimeController,
+            decoration: const InputDecoration(labelText: 'End Time'),
+          ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
               String title = titleController.text;
               String content = contentController.text;
               String dateCreated = dateController.text;
-              Note newNote = Note(title, content, dateCreated);
+              String startTime = startTimeController.text;
+              String endTime = endTimeController.text;
+              Note newNote = Note(title, content, dateCreated, startTime, endTime);
               setState(() {
                 list.add(newNote);
               });
@@ -111,13 +124,27 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
   }
 }
 class Note {
-  String title, content, dateCreated;
+  String title, content, dateCreated, startTime, endTime;
+  final DateTime today = DateTime.now();
 
-  Note(this.title, this.content, this.dateCreated);
+
+  Note(this.title, this.content, this.dateCreated, this.startTime, this.endTime); //updated this
 
   String getTitle() => title;
 
   String getContentPreview() => content;
 
   String getDateCreated() => dateCreated;
+
+  Appointment getAppointment() => Appointment(
+    startTime: DateTime(today.year, today.month, today.day, int.parse(startTime),0,0),
+    endTime: DateTime(today.year, today.month, today.day, int.parse(endTime),0,0),
+    subject: title,
+    color: Colors.blue);
+
+  // meetings.add(Appointment(
+  //   startTime: startTime,
+  //   endTime: endTime,
+  //   subject: 'Conference',
+  //   color: Colors.blue));
 }
