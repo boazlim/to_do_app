@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   syncfusion_flutter_calendar: ^23.2.4
+  reorderables: ^0.6.0
 
 dev_dependencies:
   flutter_test:

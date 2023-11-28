@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reorderables/reorderables.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 List<Note> list = [Note('Homework','Finish App Development Homework','3/5/2023', '13', '14')];
@@ -13,10 +14,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 249, 180),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Notes'),
-        backgroundColor: const Color.fromARGB(255, 142, 93, 28),
+        backgroundColor: const Color.fromARGB(255, 51, 153, 255),
       ),
       body: Center(
         child: ListView.builder(
@@ -25,7 +26,16 @@ class _ToDoScreenState extends State<ToDoScreen> {
             return Container(
               padding: const EdgeInsets.all(16),
               margin: const EdgeInsets.symmetric(vertical: 8),
-              color: const Color.fromARGB(255, 185, 183, 169), // Set your desired color
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255,250,250,250),
+                boxShadow: [
+                  BoxShadow(color: Colors.grey.shade600,
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                  offset: Offset(4,4)
+                  )
+                ] 
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
