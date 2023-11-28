@@ -85,6 +85,31 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
   final TextEditingController startTimeController = TextEditingController(text: '9');
   final TextEditingController endTimeController = TextEditingController(text: '10');
 
+  TimeOfDay _startTimeOfDay = const TimeOfDay(hour: 9, minute: 0);
+  TimeOfDay _endTimeOfDay = const TimeOfDay(hour: 10, minute: 0);
+
+  void _showStartTimePicker() {
+    showTimePicker(
+      context: context,
+      initialTime: _startTimeOfDay
+    ).then ((value) {
+      setState(() {
+        _startTimeOfDay = value!;
+      });
+    });
+  }
+
+  void _showEndTimePicker() {
+    showTimePicker(
+      context: context,
+      initialTime: _startTimeOfDay
+    ).then ((value) {
+      setState(() {
+        _startTimeOfDay = value!;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -104,13 +129,29 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
             controller: dateController,
             decoration: const InputDecoration(labelText: 'Date Created'),
           ),
-          TextField(
-            controller: startTimeController,
-            decoration: const InputDecoration(labelText: 'Start Time'),
+          // TextField(
+          //   controller: startTimeController,
+          //   decoration: const InputDecoration(labelText: 'Start Time'),
+          // ),
+          MaterialButton(
+            onPressed: _showStartTimePicker,
+            child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(_startTimeOfDay.format(context).toString(),
+              style: const TextStyle(color: Colors.grey, fontSize: 20)),
+            )
           ),
-          TextField(
-            controller: endTimeController,
-            decoration: const InputDecoration(labelText: 'End Time'),
+          // TextField(
+          //   controller: endTimeController,
+          //   decoration: const InputDecoration(labelText: 'End Time'),
+          // ),
+          MaterialButton(
+            onPressed: _showEndTimePicker,
+            child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(_endTimeOfDay.format(context).toString(),
+              style: const TextStyle(color: Colors.grey, fontSize: 20)),
+            )
           ),
           const SizedBox(height: 16),
           ElevatedButton(
