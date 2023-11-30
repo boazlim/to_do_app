@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'home_screen.dart';
 
-// on double tap on a specific box
-// an option provided showing the starting and ending time for that day appears
-// with the title name
-
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
 

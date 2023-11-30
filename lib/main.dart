@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/calendar_screen.dart';
 import 'package:to_do_app/home_screen.dart';
 
-List<Note> list = [Note('Homework','Finish App Development Homework','3/5/2023', '13', '14')];
+List<Note> list = [];
+
 void main() {
   runApp(const MyApp());
 }

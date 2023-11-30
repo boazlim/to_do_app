@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-List<Note> list = [Note('Homework','Finish App Development Homework','3/5/2023', '13', '14')];
+List<Note> list = [];
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({super.key});
@@ -81,8 +81,8 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
-  final TextEditingController startTimeController = TextEditingController(text: '9');
-  final TextEditingController endTimeController = TextEditingController(text: '10');
+  // final TextEditingController startTimeController = TextEditingController(text: '9');
+  // final TextEditingController endTimeController = TextEditingController(text: '10');
 
   TimeOfDay _startTimeOfDay = const TimeOfDay(hour: 9, minute: 0);
   TimeOfDay _endTimeOfDay = const TimeOfDay(hour: 10, minute: 0);
@@ -104,7 +104,7 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
       initialTime: _startTimeOfDay
     ).then ((value) {
       setState(() {
-        _startTimeOfDay = value!;
+        _endTimeOfDay = value!;
       });
     });
   }
@@ -158,9 +158,10 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
               String title = titleController.text;
               String content = contentController.text;
               String dateCreated = dateController.text;
-              String startTime = startTimeController.text;
-              String endTime = endTimeController.text;
-              Note newNote = Note(title, content, dateCreated, startTime, endTime);
+              // String startTime = startTimeController.text;
+              // String endTime = endTimeController.text;
+              // Note newNote = Note(title, content, dateCreated, startTime, endTime);
+              Note newNote = Note(title, content, dateCreated, _startTimeOfDay, _endTimeOfDay); // add onto class
               setState(() {
                 list.add(newNote);
               });
@@ -174,11 +175,14 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
   }
 }
 class Note {
-  String title, content, dateCreated, startTime, endTime;
+  // String title, content, dateCreated, startTime, endTime;
+  String title, content, dateCreated;
+  TimeOfDay start, end;
+
   final DateTime today = DateTime.now();
 
-
-  Note(this.title, this.content, this.dateCreated, this.startTime, this.endTime); //updated this
+  // Note(this.title, this.content, this.dateCreated, this.startTime, this.endTime); //updated this
+  Note(this.title, this.content, this.dateCreated, this.start, this.end); //updated this
 
   String getTitle() => title;
 
@@ -187,8 +191,8 @@ class Note {
   String getDateCreated() => dateCreated;
 
   Appointment getAppointment() => Appointment(
-    startTime: DateTime(today.year, today.month, today.day, int.parse(startTime),0,0),
-    endTime: DateTime(today.year, today.month, today.day, int.parse(endTime),0,0),
+    startTime: DateTime(today.year, today.month, today.day, start.hour, start.minute),
+    endTime: DateTime(today.year, today.month, today.day, end.hour, end.minute),
     subject: title,
     color: Colors.blue);
 
