@@ -19,37 +19,57 @@ class _ToDoScreenState extends State<ToDoScreen> {
         backgroundColor: const Color.fromARGB(255, 51, 153, 255),
       ),
       body: Center(
-        child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255,250,250,250),
-                boxShadow: [
-                  BoxShadow(color: Colors.grey.shade600,
-                  blurRadius: 10,
-                  spreadRadius: 1,
-                  offset: Offset(4,4)
-                  )
-                ] 
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Title: ${list[index].getTitle()}',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        
+        child: Theme(
+          data: ThemeData(canvasColor: Colors.transparent),
+          child: ReorderableListView(
+            padding: EdgeInsets.only(top: 15,left: 15, right: 15),
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                final Note item = list.removeAt(oldIndex);
+                list.insert(newIndex, item);
+              });
+            },
+            children: List.generate(
+              list.length,
+              (int index) {
+                final Note currentItem = list[index];
+                return Container(
+                  key: ValueKey(index), // Use index as the key for ReorderableListView
+                  padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 250, 250, 250),
+                    borderRadius: BorderRadius.circular(16.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade600,
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                        offset: Offset(4, 4),
+                      )
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  Text('Content: ${list[index].getContentPreview()}'),
-                  const SizedBox(height: 8),
-                  Text('Date Created: ${list[index].getDateCreated()}'),
-                ],
-              ),
-            );
-          },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        currentItem.getTitle(),
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(currentItem.getContentPreview()),
+                    const SizedBox(height: 8),
+                      Text(currentItem.getDateCreated()),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -202,3 +222,38 @@ class Note {
   //   subject: 'Conference',
   //   color: Colors.blue));
 }
+
+/*
+        child: ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255,250,250,250),
+                boxShadow: [
+                  BoxShadow(color: Colors.grey.shade600,
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                  offset: Offset(4,4)
+                  )
+                ] 
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    list[index].getTitle(),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(list[index].getContentPreview()),
+                  const SizedBox(height: 8),
+                  Text(list[index].getDateCreated()),
+                ],
+              ),
+            );
+          },
+        ),
+        */

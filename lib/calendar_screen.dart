@@ -22,15 +22,15 @@ class _CalendarScreenState extends State<CalendarScreen> { //this is the functio
         firstDayOfWeek: 7,
         dataSource: MeetingDataSource(appointments),
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: _onAddAppointmentPressed,
         tooltip: 'Add Appointment',
         child: const Icon(Icons.add),
-      ),
+      ),*/
     );
   }
 
-  void _onAddAppointmentPressed() {
+  /*void _onAddAppointmentPressed() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -42,9 +42,10 @@ class _CalendarScreenState extends State<CalendarScreen> { //this is the functio
       },
     );
   }
+  */
 }  // floating action button here
 
-class AddAppointmentDialog extends StatefulWidget {
+/*class AddAppointmentDialog extends StatefulWidget {
   final Function(Appointment) onAdd;
 
   AddAppointmentDialog({Key? key, required this.onAdd}) : super(key: key);
@@ -117,6 +118,7 @@ class _AddAppointmentDialogState extends State<AddAppointmentDialog> {
     );
   }
 }
+*/
 
 List<Appointment> getAppointments() {
   List<Appointment> meetings = <Appointment>[];
@@ -124,13 +126,6 @@ List<Appointment> getAppointments() {
   final DateTime startTime = 
     DateTime(today.year, today.month, today.day, 9,0,0);
   final DateTime endTime = startTime.add(const Duration(hours: 2));
-
-  meetings.add(Appointment(
-    startTime: startTime,
-    endTime: endTime,
-    subject: 'Conference',
-    color: Colors.blue));
-
   for (Note note in list) {
     meetings.add(note.getAppointment());
   }
