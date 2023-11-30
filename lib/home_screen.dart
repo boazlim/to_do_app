@@ -222,38 +222,3 @@ class Note {
   //   subject: 'Conference',
   //   color: Colors.blue));
 }
-
-/*
-        child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255,250,250,250),
-                boxShadow: [
-                  BoxShadow(color: Colors.grey.shade600,
-                  blurRadius: 10,
-                  spreadRadius: 1,
-                  offset: Offset(4,4)
-                  )
-                ] 
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    list[index].getTitle(),
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(list[index].getContentPreview()),
-                  const SizedBox(height: 8),
-                  Text(list[index].getDateCreated()),
-                ],
-              ),
-            );
-          },
-        ),
-        */
