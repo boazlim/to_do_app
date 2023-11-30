@@ -15,7 +15,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Notes'),
+        title: const Text('To Do List'),
         backgroundColor: const Color.fromARGB(255, 51, 153, 255),
       ),
       body: Center(
@@ -38,7 +38,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
               (int index) {
                 final Note currentItem = list[index];
                 return Container(
-                  key: ValueKey(index), // Use index as the key for ReorderableListView
+                  key: ValueKey(index),
                   padding: const EdgeInsets.all(16),
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   decoration: BoxDecoration(
@@ -62,8 +62,33 @@ class _ToDoScreenState extends State<ToDoScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(currentItem.getContentPreview()),
-                    const SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(currentItem.getDateCreated()),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return EditNoteWidget(currentItem);
+                                },
+                              );
+                            },
+                            child: const Text('Edit'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                list.removeAt(index);
+                              });
+                            },
+                            child: const Text('Delete'),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 );
@@ -88,6 +113,58 @@ class _ToDoScreenState extends State<ToDoScreen> {
   }
 }
 
+class EditNoteWidget extends StatefulWidget {
+  final Note note;
+
+  const EditNoteWidget(this.note, {Key? key}) : super(key: key);
+
+  @override
+  _EditNoteWidgetState createState() => _EditNoteWidgetState();
+}
+
+class _EditNoteWidgetState extends State<EditNoteWidget> {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController contentController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    titleController.text = widget.note.title;
+    contentController.text = widget.note.content;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Edit Note'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: titleController,
+            decoration: const InputDecoration(labelText: 'Title'),
+          ),
+          TextField(
+            controller: contentController,
+            decoration: const InputDecoration(labelText: 'Content'),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                // Update note with edited values
+                widget.note.title = titleController.text;
+                widget.note.content = contentController.text;
+              });
+              Navigator.of(context).pop();
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 
 class NewNoteWidget extends StatefulWidget {
@@ -101,8 +178,6 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
-  // final TextEditingController startTimeController = TextEditingController(text: '9');
-  // final TextEditingController endTimeController = TextEditingController(text: '10');
 
   TimeOfDay _startTimeOfDay = const TimeOfDay(hour: 9, minute: 0);
   TimeOfDay _endTimeOfDay = const TimeOfDay(hour: 10, minute: 0);
@@ -148,10 +223,6 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
             controller: dateController,
             decoration: const InputDecoration(labelText: 'Date Created'),
           ),
-          // TextField(
-          //   controller: startTimeController,
-          //   decoration: const InputDecoration(labelText: 'Start Time'),
-          // ),
           MaterialButton(
             onPressed: _showStartTimePicker,
             child: Padding(
@@ -160,10 +231,6 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
               style: const TextStyle(color: Colors.grey, fontSize: 20)),
             )
           ),
-          // TextField(
-          //   controller: endTimeController,
-          //   decoration: const InputDecoration(labelText: 'End Time'),
-          // ),
           MaterialButton(
             onPressed: _showEndTimePicker,
             child: Padding(
@@ -178,9 +245,6 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
               String title = titleController.text;
               String content = contentController.text;
               String dateCreated = dateController.text;
-              // String startTime = startTimeController.text;
-              // String endTime = endTimeController.text;
-              // Note newNote = Note(title, content, dateCreated, startTime, endTime);
               Note newNote = Note(title, content, dateCreated, _startTimeOfDay, _endTimeOfDay); // add onto class
               setState(() {
                 list.add(newNote);
@@ -215,10 +279,4 @@ class Note {
     endTime: DateTime(today.year, today.month, today.day, end.hour, end.minute),
     subject: title,
     color: Colors.blue);
-
-  // meetings.add(Appointment(
-  //   startTime: startTime,
-  //   endTime: endTime,
-  //   subject: 'Conference',
-  //   color: Colors.blue));
-}
+  }
