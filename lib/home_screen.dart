@@ -197,9 +197,4 @@ class Note {
     subject: title,
     color: Colors.blue);
 
-  // meetings.add(Appointment(
-  //   startTime: startTime,
-  //   endTime: endTime,
-  //   subject: 'Conference',
-  //   color: Colors.blue));
 }
