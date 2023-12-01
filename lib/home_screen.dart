@@ -62,7 +62,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                       const SizedBox(height: 8),
                       Text(currentItem.getContentPreview()),
                       const SizedBox(height: 8),
-                      Text(currentItem.getDateCreated()),
+                      Text(currentItem.getDateCreated()),//ADD DUE DATE + TIME IN FORMAT OF  'Date, Time';
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,7 +118,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
 }
 class EditNoteWidget extends StatefulWidget {
   final Note note;
-  final VoidCallback onNoteEdited; // New callback
+  final VoidCallback onNoteEdited;
 
   const EditNoteWidget(this.note, {required this.onNoteEdited, Key? key})
       : super(key: key);

@@ -17,6 +17,10 @@ class _CalendarScreenState extends State<CalendarScreen> { //this is the functio
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Calendar'),
+        backgroundColor: const Color.fromARGB(255, 51, 153, 255),
+      ),
       body: SfCalendar(
         view: CalendarView.month,
         firstDayOfWeek: 7,

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/calendar_screen.dart';
 import 'package:to_do_app/home_screen.dart';
 
+//Take out start/end time and add a single due time and a due date
+//Place bottomnavigationbar into original build
+//Edit the EditNote Class to allow editing for due date/time
+
 List<Note> list = [];
 
 void main() {
