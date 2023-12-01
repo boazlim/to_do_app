@@ -19,7 +19,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
         backgroundColor: const Color.fromARGB(255, 51, 153, 255),
       ),
       body: Center(
-        
         child: Theme(
           data: ThemeData(canvasColor: Colors.transparent),
           child: ReorderableListView(
@@ -73,7 +72,12 @@ class _ToDoScreenState extends State<ToDoScreen> {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return EditNoteWidget(currentItem);
+                                  return EditNoteWidget(
+                                    currentItem,
+                                    onNoteEdited: () {
+                                      setState(() {}); // Trigger a rebuild when the note is edited
+                                    },
+                                  );
                                 },
                               );
                             },
@@ -112,25 +116,26 @@ class _ToDoScreenState extends State<ToDoScreen> {
     );
   }
 }
-
 class EditNoteWidget extends StatefulWidget {
   final Note note;
+  final VoidCallback onNoteEdited; // New callback
 
-  const EditNoteWidget(this.note, {Key? key}) : super(key: key);
+  const EditNoteWidget(this.note, {required this.onNoteEdited, Key? key})
+      : super(key: key);
 
   @override
   _EditNoteWidgetState createState() => _EditNoteWidgetState();
 }
 
 class _EditNoteWidgetState extends State<EditNoteWidget> {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController contentController = TextEditingController();
+  late TextEditingController titleController;
+  late TextEditingController contentController;
 
   @override
   void initState() {
     super.initState();
-    titleController.text = widget.note.title;
-    contentController.text = widget.note.content;
+    titleController = TextEditingController(text: widget.note.getTitle());
+    contentController = TextEditingController(text: widget.note.getContentPreview());
   }
 
   @override
@@ -148,23 +153,29 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
             controller: contentController,
             decoration: const InputDecoration(labelText: 'Content'),
           ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                // Update note with edited values
-                widget.note.title = titleController.text;
-                widget.note.content = contentController.text;
-              });
-              Navigator.of(context).pop();
-            },
-            child: const Text('Save'),
-          ),
         ],
       ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            widget.note.setTitle(titleController.text);
+            widget.note.setContent(contentController.text);
+            widget.onNoteEdited(); // Trigger the callback
+            Navigator.pop(context);
+          },
+          child: const Text('Save'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Cancel'),
+        ),
+      ],
     );
   }
 }
+
 
 
 class NewNoteWidget extends StatefulWidget {
@@ -269,9 +280,13 @@ class Note {
   Note(this.title, this.content, this.dateCreated, this.start, this.end); //updated this
 
   String getTitle() => title;
-
+  void setTitle(String s) {
+    title = s;
+  }
   String getContentPreview() => content;
-
+  void setContent(String s) {
+    content = s;
+  }
   String getDateCreated() => dateCreated;
 
   Appointment getAppointment() => Appointment(

@@ -18,7 +18,7 @@ class _CalendarScreenState extends State<CalendarScreen> { //this is the functio
   Widget build(BuildContext context) {
     return Scaffold(
       body: SfCalendar(
-        view: CalendarView.week,
+        view: CalendarView.month,
         firstDayOfWeek: 7,
         dataSource: MeetingDataSource(appointments),
       ),
