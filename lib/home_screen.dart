@@ -64,7 +64,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                       const SizedBox(height: 8),
                       Text(currentItem.getDateCreated()),//ADD DUE DATE + TIME IN FORMAT OF  'Date, Time';
                       const SizedBox(height: 8),
-                      Text(currentItem.getStart()),
+                      Text(currentItem.getTime()),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,6 +133,19 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
   late TextEditingController titleController;
   late TextEditingController contentController;
 
+  TimeOfDay _startTimeOfDay = const TimeOfDay(hour: 9, minute: 0);
+
+  void _showStartTimePicker() {
+    showTimePicker(
+      context: context,
+      initialTime: _startTimeOfDay
+    ).then ((value) {
+      setState(() {
+        _startTimeOfDay = value!;
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -155,6 +168,15 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
             controller: contentController,
             decoration: const InputDecoration(labelText: 'Content'),
           ),
+          MaterialButton(
+            onPressed: _showStartTimePicker,
+            child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(_startTimeOfDay.format(context).toString(),
+              style: const TextStyle(color: Colors.grey, fontSize: 20)),
+            )
+          ),
+          
         ],
       ),
       actions: [
@@ -162,6 +184,7 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
           onPressed: () {
             widget.note.setTitle(titleController.text);
             widget.note.setContent(contentController.text);
+            widget.note.setStart(_startTimeOfDay);
             widget.onNoteEdited(); // Trigger the callback
             Navigator.pop(context);
           },
@@ -234,7 +257,7 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
           ),
           TextField(
             controller: dateController,
-            decoration: const InputDecoration(labelText: 'Date Created'),
+            decoration: const InputDecoration(labelText: 'Due Date'),
           ),
           MaterialButton(
             onPressed: _showStartTimePicker,
@@ -244,14 +267,14 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
               style: const TextStyle(color: Colors.grey, fontSize: 20)),
             )
           ),
-          MaterialButton(
-            onPressed: _showEndTimePicker,
-            child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(_endTimeOfDay.format(context).toString(),
-              style: const TextStyle(color: Colors.grey, fontSize: 20)),
-            )
-          ),
+          // MaterialButton(
+          //   onPressed: _showEndTimePicker,
+          //   child: Padding(
+          //   padding: const EdgeInsets.all(20.0),
+          //   child: Text(_endTimeOfDay.format(context).toString(),
+          //     style: const TextStyle(color: Colors.grey, fontSize: 20)),
+          //   )
+          // ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
@@ -289,8 +312,13 @@ class Note {
   void setContent(String s) {
     content = s;
   }
+
+  void setStart(TimeOfDay s) {
+    start = s;
+  }
+
   String getDateCreated() => dateCreated;
-  String getStart() => start.toString();
+  String getTime() => "${start.hour}:${start.minute}";
 
   Appointment getAppointment() => Appointment(
     startTime: DateTime(today.year, today.month, today.day, start.hour, start.minute),
