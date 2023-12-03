@@ -64,6 +64,8 @@ class _ToDoScreenState extends State<ToDoScreen> {
                       const SizedBox(height: 8),
                       Text(currentItem.getDateCreated()),//ADD DUE DATE + TIME IN FORMAT OF  'Date, Time';
                       const SizedBox(height: 8),
+                      Text(currentItem.getStart()),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -288,6 +290,7 @@ class Note {
     content = s;
   }
   String getDateCreated() => dateCreated;
+  String getStart() => start.toString();
 
   Appointment getAppointment() => Appointment(
     startTime: DateTime(today.year, today.month, today.day, start.hour, start.minute),
