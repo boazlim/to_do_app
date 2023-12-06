@@ -267,14 +267,6 @@ class _NewNoteWidgetState extends State<NewNoteWidget> {
               style: const TextStyle(color: Colors.grey, fontSize: 20)),
             )
           ),
-          // MaterialButton(
-          //   onPressed: _showEndTimePicker,
-          //   child: Padding(
-          //   padding: const EdgeInsets.all(20.0),
-          //   child: Text(_endTimeOfDay.format(context).toString(),
-          //     style: const TextStyle(color: Colors.grey, fontSize: 20)),
-          //   )
-          // ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
@@ -301,7 +293,6 @@ class Note {
 
   final DateTime today = DateTime.now();
 
-  // Note(this.title, this.content, this.dateCreated, this.startTime, this.endTime); //updated this
   Note(this.title, this.content, this.dateCreated, this.start, this.end); //updated this
 
   String getTitle() => title;
